@@ -99,9 +99,13 @@
       panorama.addEventListener( 'enter', onEnter );
 
       panorama1.link( panorama2, new THREE.Vector3( -2302.98, 358.27, -4414.74 ) );
-      panorama3.link( panorama3, new THREE.Vector3( 4954.53, 319.21, -556.71 ) );
+      panorama1.link( panorama3, new THREE.Vector3( 4954.53, 319.21, -556.71 ) );
+
       panorama2.link( panorama1, new THREE.Vector3( 2302.98, 358.27, 4414.74 ) )
+      panorama2.link( panorama3, new THREE.Vector3( 4954.53, 319.21, -556.71 ) );
+
       panorama3.link( panorama2, new THREE.Vector3( -2302.98, 358.27, -4414.74 ) );
+      panorama3.link( panorama1, new THREE.Vector3( 2302.98, 358.27, 4414.74 ) )
 
       viewer = new PANOLENS.Viewer();
       viewer.add( panorama1, panorama2, panorama3 );
