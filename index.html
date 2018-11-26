@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, shrink-to-fit=no">
+    <title>test</title>
+    <style>
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #000;
+      }
+
+      a:link, a:visited{
+        color: #bdc3c7;
+      }
+
+      .credit{
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        padding: 20px 0;
+        color: #fff;
+      }
+
+      #progress {
+        width: 0;
+        height: 5px;
+        position: fixed;
+        top: 0;
+        background: #fff;
+        -webkit-transition: opacity 0.5s ease;
+        transition: opacity 0.5s ease;
+      }
+
+      #progress.finish {
+        opacity: 0;
+      }
+      
+
+    </style>
+  </head>
+
+  <body>
+
+    <div id="progress"></div>
+    
+    <script src="./libs/three.min.js"></script>
+    <script src="./build/panolens-offline.js"></script>
+
+    <script>
+
+      var panorama1, panorama2, viewer, progress, progressElement;
+
+
+      progressElement = document.getElementById( 'progress' );
+
+      function onEnter ( event ) {
+
+        progressElement.style.width = 0;
+        progressElement.classList.remove( 'finish' );
+
+      }
+
+      function onProgress ( event ) {
+        
+        progress = event.progress.loaded / event.progress.total * 100;
+        progressElement.style.width = progress + '%';
+        if ( progress === 100 ) {
+          progressElement.classList.add( 'finish' );
+        }
+
+      }
+
+      var s1Path = './asset/car/s1/';
+      var format = '.jpg';
+      panorama1 = new PANOLENS.CubePanorama( [
+          s1Path + 'px' + format, s1Path + 'nx' + format,
+          s1Path + 'py' + format, s1Path + 'ny' + format,
+          s1Path + 'pz' + format, s1Path + 'nz' + format
+      ] );
+      panorama1.addEventListener( 'progress', onProgress );
+      panorama1.addEventListener( 'enter', onEnter );
+
+      var s2Path = './asset/car/s2/';
+      var format = '.jpg';
+      panorama2 = new PANOLENS.CubePanorama( [
+          s2Path + 'px' + format, s2Path + 'nx' + format,
+          s2Path + 'py' + format, s2Path + 'ny' + format,
+          s2Path + 'pz' + format, s2Path + 'nz' + format
+      ] );
+      panorama2.addEventListener( 'progress', onProgress );
+      panorama2.addEventListener( 'enter', onEnter );
+
+      // Linking panoramas
+      panorama1.link( panorama2, new THREE.Vector3( -2302.98, 358.27, -4414.74 ) );
+      panorama2.link( panorama1, new THREE.Vector3( 2302.98, 358.27, 4414.74 ) )
+
+      viewer = new PANOLENS.Viewer();
+      viewer.add( panorama1, panorama2 );
+
+    </script>
+
+  </body>
