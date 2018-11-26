@@ -52,7 +52,7 @@
 
     <script>
 
-      var panorama1, panorama2, viewer, progress, progressElement;
+      var panorama1, panorama2, panorama3, viewer, progress, progressElement;
 
 
       progressElement = document.getElementById( 'progress' );
@@ -94,12 +94,17 @@
       panorama2.addEventListener( 'progress', onProgress );
       panorama2.addEventListener( 'enter', onEnter );
 
-      // Linking panoramas
+      panorama = new PANOLENS.ImagePanorama( './asset/car/s3/default.jpg' );
+      panorama.addEventListener( 'progress', onProgress );
+      panorama.addEventListener( 'enter', onEnter );
+
       panorama1.link( panorama2, new THREE.Vector3( -2302.98, 358.27, -4414.74 ) );
+      panorama3.link( panorama3, new THREE.Vector3( 4954.53, 319.21, -556.71 ) );
       panorama2.link( panorama1, new THREE.Vector3( 2302.98, 358.27, 4414.74 ) )
+      panorama3.link( panorama2, new THREE.Vector3( -2302.98, 358.27, -4414.74 ) );
 
       viewer = new PANOLENS.Viewer();
-      viewer.add( panorama1, panorama2 );
+      viewer.add( panorama1, panorama2, panorama3 );
 
     </script>
 
