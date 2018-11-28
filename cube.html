@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width, shrink-to-fit=no">
+    <title>test</title>
+    <style>
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #000;
+      }
+
+      a:link, a:visited{
+        color: #bdc3c7;
+      }
+
+      .credit{
+        position: absolute;
+        text-align: center;
+        width: 100%;
+        padding: 20px 0;
+        color: #fff;
+      }
+
+      #progress {
+        width: 0;
+        height: 5px;
+        position: fixed;
+        top: 0;
+        background: #fff;
+        -webkit-transition: opacity 0.5s ease;
+        transition: opacity 0.5s ease;
+      }
+
+      #progress.finish {
+        opacity: 0;
+      }
+      
+      .hello{
+        animation-duration: 1s;
+        animation-name: fadeAndScale;
+      }
+
+      @keyframes fadeAndScale {
+        from {
+          opacity: 0;
+          transform: scale(.9, .9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1, 1);
+        }
+      }
+
+    </style>
+  </head>
+
+  <body>
+
+    <div id="progress"></div>
+    
+    <script src="./libs/three.min.js"></script>
+    <script src="./build/panolens.min.js"></script>
+
+    <script>
+
+      var panorama1, panorama2, panorama3, viewer, progress, progressElement;
+
+
+      progressElement = document.getElementById( 'progress' );
+
+      function onEnter ( event ) {
+        
+        progressElement.style.width = 0;
+        progressElement.classList.remove( 'finish' );
+        this.container.childNodes[0].classList.add('hello')
+
+      }
+
+      function onProgress ( event ) {
+        
+        progress = event.progress.loaded / event.progress.total * 100;
+        progressElement.style.width = progress + '%';
+        if ( progress === 100 ) {
+          progressElement.classList.add( 'finish' );
+        }
+
+      }
+
+      var s1Path = './asset/car/s1/';
+      var format = '.jpg';
+      panorama1 = new PANOLENS.CubePanorama( [
+          s1Path + 'px' + format, s1Path + 'nx' + format,
+          s1Path + 'py' + format, s1Path + 'ny' + format,
+          s1Path + 'pz' + format, s1Path + 'nz' + format
+      ] );
+      panorama1.addEventListener( 'progress', onProgress );
+      panorama1.addEventListener( 'enter', onEnter );
+
+      var s2Path = './asset/car/s2/';
+      var format = '.jpg';
+      panorama2 = new PANOLENS.CubePanorama( [
+          s2Path + 'px' + format, s2Path + 'nx' + format,
+          s2Path + 'py' + format, s2Path + 'ny' + format,
+          s2Path + 'pz' + format, s2Path + 'nz' + format
+      ] );
+      panorama2.addEventListener( 'progress', onProgress );
+      panorama2.addEventListener( 'enter', onEnter );
+
+      // panorama3 = new PANOLENS.ImagePanorama( './asset/car/s3/default.jpg' );
+      // panorama3.addEventListener( 'progress', onProgress );
+      // panorama3.addEventListener( 'enter', onEnter );
+      var s3Path = './asset/car/s3/madhoun/s1/';
+      var format = '.jpeg';
+      panorama3 = new PANOLENS.CubePanorama( [
+          s3Path + 'px' + format, s3Path + 'nx' + format,
+          s3Path + 'py' + format, s3Path + 'ny' + format,
+          s3Path + 'pz' + format, s3Path + 'nz' + format
+      ] );
+      panorama3.addEventListener( 'progress', onProgress );
+      panorama3.addEventListener( 'enter', onEnter );
+
+      panorama1.link( panorama2, new THREE.Vector3( -2302.98, 358.27, -4414.74 ) );
+      panorama2.link( panorama1, new THREE.Vector3( 2302.98, 358.27, 4414.74 ) );
+
+      panorama1.link( panorama3, new THREE.Vector3( 4954.53, 319.21, 556.71 ) )
+      panorama3.link( panorama2, new THREE.Vector3( 4954.53, 319.21, -556.71 ) );
+      
+      viewer = new PANOLENS.Viewer();
+      viewer.add( panorama1, panorama2, panorama3 );
+
+    </script>
+
+  </body>
