@@ -349,9 +349,10 @@ function canvas360(params) {
     currentImage = frameImages[curFrame];
 
     if (curFrame >= 0 && curFrame < (params.framesCount - 1)) {
-      context.drawImage(currentImage, imagePositionX, imagePositionY);
+      context.drawImage(currentImage, imagePositionX, imagePositionX);
+      context.msImageSmoothingEnabled = true;
+      context.imageSmoothingEnabled = true;
     }
-
   }
   if (params.canvasId) {
     // Set the variable elem to the object with the specified params.canvasId
