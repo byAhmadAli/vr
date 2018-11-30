@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>test</title>
+    
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js' type='text/javascript'></script>
+    <script src='http://unpkg.com/spritespin@x.x.x/release/spritespin.js' type='text/javascript'></script>
+</head>
+<body>
+
+        <a class="button js-fullscreen" href="#">Fullscreen</a>
+        <div class="spritespin"></div>
+<script>
+    $(function() {
+        $('a.js-fullscreen').click(function(e) {
+            e.preventDefault();
+            $('.spritespin').spritespin('api').requestFullscreen();
+        });
+        $('.spritespin').spritespin({
+            source: SpriteSpin.sourceArray('../asset/video/{frame}.jpg', { frame: [1,525], digits: 2 }),
+            width: 480,
+            height: 327,
+            sizeMode: 'fill',
+            sense: -1,
+            animate: false,
+            frameTime: 25,
+            plugins: [
+                'progress',
+                '360',
+                'drag'
+            ]
+        });
+    });    
+</script>
+</body>
+</html>
